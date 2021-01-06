@@ -2,28 +2,26 @@ const express = require("express");
 
 const app = express();
 
+// If no timestamp is provided, return the current date
 app.get("/api/timestamp", (req, res) => {
-  const unix = Date.now();
-  const utc = Date();
-
-  res.json({ unix, utc });
+  res.json({ unix: Date.now(), utc: Date() });
 });
 
 app.get("/api/timestamp/:date", (req, res) => {
   const dateStr = req.params.date;
 
-  // if dateStr has 5 or more sequential numbers, treat as unix timestamp
-  if (/\d{5,}/.test(dateStr)) {
+  // If non-digit characters are passed, check if dateStr is a valid ISO-8601 date
+  if (/\D/.test(dateStr)) {
+    const newDate = new Date(dateStr);
+    if (newDate.toString() === "Invalid Date") {
+      return res.json({ error: "Invalid Date" });
+    } else {
+      res.json({ unix: newDate.valueOf(), utc: newDate.toUTCString() });
+    }
+  } else {
+    // If only digits are passed, treat dateStr as a unix timestamp
     const dateInt = parseInt(dateStr);
     res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
-  } else {
-    // check if dateStr is valid ISO-8601 date
-    const newDateObj = new Date(dateStr);
-    if (newDateObj.toString() === "Invalid Date") {
-      res.json({ error: "Invalid Date" });
-    } else {
-      res.json({ unix: newDateObj.valueOf(), utc: newDateObj.toUTCString() });
-    }
   }
 });
 
