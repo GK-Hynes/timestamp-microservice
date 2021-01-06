@@ -12,16 +12,21 @@ app.get("/api/timestamp/:date", (req, res) => {
 
   // If non-digit characters are passed, check if dateStr is a valid ISO-8601 date
   if (/\D/.test(dateStr)) {
-    const newDate = new Date(dateStr);
-    if (newDate.toString() === "Invalid Date") {
+    const ISODate = new Date(dateStr);
+    if (ISODate.toString() === "Invalid Date") {
       return res.json({ error: "Invalid Date" });
     } else {
-      res.json({ unix: newDate.valueOf(), utc: newDate.toUTCString() });
+      res.json({ unix: ISODate.valueOf(), utc: ISODate.toUTCString() });
     }
   } else {
-    // If only digits are passed, treat dateStr as a unix timestamp
+    // If only digits are passed, check if dateStr is a valid unix timestamp
     const dateInt = parseInt(dateStr);
-    res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
+    const UnixDate = new Date(dateInt);
+    if (UnixDate.toString() === "Invalid Date") {
+      return res.json({ error: "Invalid Date" });
+    } else {
+      res.json({ unix: dateInt, utc: UnixDate.toUTCString() });
+    }
   }
 });
 
