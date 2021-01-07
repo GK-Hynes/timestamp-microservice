@@ -17,7 +17,7 @@ app.get("/", function (req, res) {
 // If no timestamp is provided, return the current date
 app.get("/api/timestamp", (req, res) => {
   const date = new Date();
-  return res.json({ unix: date.getTime(), utc: date.toUTCString() });
+  res.json({ unix: date.getTime(), utc: date.toUTCString() });
 });
 
 app.get("/api/timestamp/:date", (req, res) => {
@@ -27,7 +27,7 @@ app.get("/api/timestamp/:date", (req, res) => {
   if (/\D/.test(dateStr)) {
     const ISODate = new Date(dateStr);
     if (ISODate.toString() === "Invalid Date") {
-      return res.json({ error: "Invalid Date" });
+      res.json({ error: "Invalid Date" });
     } else {
       res.json({ unix: ISODate.valueOf(), utc: ISODate.toUTCString() });
     }
@@ -36,7 +36,7 @@ app.get("/api/timestamp/:date", (req, res) => {
     const dateInt = parseInt(dateStr);
     const UnixDate = new Date(dateInt);
     if (UnixDate.toString() === "Invalid Date") {
-      return res.json({ error: "Invalid Date" });
+      res.json({ error: "Invalid Date" });
     } else {
       res.json({ unix: dateInt, utc: UnixDate.toUTCString() });
     }
