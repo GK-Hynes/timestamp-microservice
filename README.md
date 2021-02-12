@@ -4,6 +4,8 @@ A timestamp microservice built for the freeCodeCamp APIs and Microservices Certi
 
 [View live project](https://timestamp-microservice.gkhynes.repl.co)
 
+![Screenshot of Timestamp Microservice project](https://res.cloudinary.com/gerhynes/image/upload/f_auto/q_auto/v1613161241/Screenshot_2021-02-12_Timestamp_Microservice_lnqvr3.png)
+
 ### Requirements
 
 - A request to `/api/timestamp/:date?` with a valid date should return a JSON object with a `unix` key that is a Unix timestamp of the input date in milliseconds
